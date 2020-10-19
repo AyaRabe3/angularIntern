@@ -32,6 +32,14 @@
             ],
             "scripts": []
           },
+          "server": {
+            "builder": "@angular-devkit/build-angular:server",
+            "options": {
+              "outputPath": "dist/universal-app/server",
+              "main": "server.ts",
+              "tsConfig": "tsconfig.server.json"
+           }
+           },
           "configurations": {
             "production": {
               "fileReplacements": [
@@ -63,15 +71,28 @@
             }
           }
         },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
           "options": {
-            "browserTarget": "universal-app:build"
+            "browserTarget": "universal-app:build",
+            "serverTarget": "universal-app:server"
           },
           "configurations": {
             "production": {
-              "browserTarget": "universal-app:build:production"
+              "browserTarget": "universal-app:build:production",
+              "serverTarget": "universal-app:server:production"
             }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "browserTarget": "universal-app:build:production",
+            "serverTarget": "universal-app:server:production",
+            "routes": []
+          },
+          "configurations": {
+            "production": {}
           }
         },
         "extract-i18n": {
